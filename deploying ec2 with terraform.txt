@@ -1,0 +1,48 @@
+using terraform to deploy ec2
+
+
+#terraform init
+create directory
+#mkdir demo1
+#cd demo1
+create a terraform config file
+#vim main.tf 
+
+provider section defines where we are deploying resources 
+resource section defines property of resource that we are deploying
+
+provider "aws" {
+access_key = ""
+secret_key = ""
+region = ""
+}
+
+resource "aws_instance" "example" {
+ami = ""
+instance_type = "t2.micro"
+}
+
+#terraform validate
+#terraform fmt - format the files
+#terraform plan - will print execution plan
+#terraform apply - depoy the resource
+
+terraform keeps the state of infrastructure in a file called terraform.tfstate
+
+#ls
+#terraform destroy - to delete the deployed resource.
+
+
+
+
+
+
+resource "aws_instance" "Max2" {
+ami = "08a57643245353515"
+instance_type = "t2.micro"
+}
+
+AKIAYTIZV4PQ2OBVRSHZ
+ZQU+XnN3oP7MWAqlscTyPtKkkw0wA68hKsUa2tbP
+
+ami-0c95aae83dc5a60ac

@@ -1,0 +1,51 @@
+stream log on cloudwatch
+
+1. create IAM role with relevant permission and attach to linux instance
+
+
+2. install cloudwatch agent 
+#yum install awslogs -y 
+#cd /etc/awslogs - checks region you are sending the logs (make sure the region matches)
+#ls
+#cat awslogs.conf - where you see va/log messages by default
+#cat va/log/messages/- contains os logs
+
+#service awslogsd start - start the cloudwatch agent
+#service awslogsd status 
+
+check the cloud watch 
+goto cloudwatch, log groups, varlog messages, instance id then see the logs
+
+
+
+3. install tomcat and start tomcat
+
+cd to to logs, tomcat logs folder in catalina.out
+
+#cd logs
+#ll
+#pwd - and copy the path
+
+go back to etc/awslogs folder and cat the aws.conf
+#cd /etc/awslogs/
+#ll
+#cat aws.conf
+copy the var/log/messages and paste on notepad
+
+go back to tomcat log folder and copy the path when you do pwd
+#tomcat-log-> pwd
+copy the folder and replace the var/log/messages/catalina.out on notepad - which is the file you want to monitor
+
+copy the editted notepad and add to the configuration file in awslog
+
+# cd etc/awslogs/
+#ll
+#nano awslogs.conf
+
+scroll till end and paste, save
+
+#service awslogd restart
+
+goto cloudwatch loggroup and see tomcat there
+
+

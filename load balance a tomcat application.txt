@@ -1,0 +1,83 @@
+load balance a tomcat application
+
+Install the Apache Web Server onto the First Provided Lab Server and Configure It as a Load Balancer to the Two Tomcat Instances
+
+#sudo yum install httpd
+
+#sudo systemctl enable httpd
+
+#sudo systemctl start httpd
+
+Go to a browser and test that the Apache web server is working by connecting to its IP address. You should see the default Apache web page. Now you need to configure the load balancer.
+
+Edit the Apache web server’s configuration file. This can be found at /etc/httpd/conf/httpd.conf
+
+#nano /etc/httpd/conf/httpd.conf
+
+Jump to the end of the file, and edit above where it has the following entry:
+
+IncludeOptional conf.d/*.conf
+
+inside the configuration file, (Note: Replace the TOMCAT1-INTERNAL-IP and TOMCAT2-INTERNAL-IP with the respective internal IP address of each Tomcat server):
+
+LoadModule proxy_module modules/mod_proxy.so
+LoadModule proxy_balancer_module modules/mod_proxy_balancer.so
+LoadModule proxy_http_module modules/mod_proxy_http.so
+
+<IfModule proxy_module>
+ProxyRequests on
+ProxyPass /examples balancer://mycluster stickysession=JSESSIONID
+ProxyPassReverse /examples balancer://mycluster stickysession=JSESSIONID
+
+<Proxy balancer://mycluster>
+BalancerMember http://TOMCAT1-INTERNAL-IP:8080/examples route=tomcat1
+BalancerMember http://TOMCAT2-INTERNAL-IP:8080/examples route=tomcat2
+</Proxy>
+
+</IfModule>
+
+Make Changes to the Tomcat Instances as Required, by Editing Configuration in Each’s /usr/local/tomcat9 Directory
+
+Log into one Tomcat server with SSH. Edit server.xml to make the required changes:
+
+#sudo nano /usr/local/tomcat9/conf/server.xml
+Change this line:
+<Engine name="Catalina" defaultHost="localhost" >
+Make it read:
+<Engine name="Catalina" defaultHost="localhost" jvmRoute="tomcat1">
+Save and exit, then restart Tomcat.
+
+#systemctl restart tomcat
+
+Now log into the second Tomcat server. Edit server.xml to make the required changes:
+#sudo nano /usr/local/tomcat9/conf/server.xml
+Change this line:
+<Engine name="Catalina" defaultHost="localhost" >
+Make it read:
+<Engine name="Catalina" defaultHost="localhost" jvmRoute="tomcat2">
+Save and exit, then restart Tomcat.
+
+#systemctl restart tomcat
+
+Either Disable or Change SELinux so That the Load Balancing Will Work
+
+Disabling SELinux
+
+#sudo setenforce permissive
+
+Then edit the SELinux config file to change the server to be permissive.
+
+#sudo nano /etc/selinux/config
+Once in the editor, edit this line:
+
+SELINUX=enforcing
+Change enforcing to permissive, so that it looks like this:
+
+SELINUX=permissive
+Save the file, then use the setenforce command to change the running SELinux to be permissive.
+
+sudo setenforce permissive
+
+test with 
+
+http://LOAD-BALANCER-IP/examples/servlets/servlet/SessionExample

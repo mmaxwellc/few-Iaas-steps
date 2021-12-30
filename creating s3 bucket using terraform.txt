@@ -1,0 +1,31 @@
+creating s3 bucket using terraform
+
+provider "aws" {
+access_key = ""
+secret_key = ""
+region = ""
+}
+
+resource "aws_s3_bucket" "b" {
+  bucket = "my-tf-test-bucket"
+  acl    = "private"
+
+  tags = {
+    Name        = "My bucket"
+    Environment = "Dev"
+  }
+}
+
+
+
+
+provider "aws" {
+access_key = "AKIAYTIZV4PQ6PMFWP77"
+secret_key = "Xg6izwgFBgEqZqw7wG3pSciCT1mCQ7lhIZ8qJBAN"
+region = "us-east-2"
+}
+
+resource "aws_instance" "example" {
+ami = "ami-0629230e074c580f2"
+instance_type = "t2.micro"
+}

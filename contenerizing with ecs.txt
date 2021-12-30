@@ -1,0 +1,12 @@
+containerization with ecs
+
+running a container on a server host
+
+#yum install docker
+#docker pull nginx
+#service docker start
+#docker images
+#docker run -p 80:80 nginx
+left - port on the host(host machine)
+right - port on the container(Iinside)
+#

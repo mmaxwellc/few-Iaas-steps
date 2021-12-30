@@ -1,0 +1,47 @@
+deploy ec2 instance with security group and iam using terraform
+
+
+create directory
+#mkdir demo1
+#cd demo1
+#terraform init
+create a terraform config file
+#vim main.tf 
+
+provider section defines where we are deploying resources 
+resource section defines property of resource that we are deploying
+
+provider "aws" {
+access_key = ""
+secret_key = ""
+region = ""
+}
+
+resource "aws_instance" "example" {
+ami = ""
+instance_type = "t2.micro"
+key_name = "windowsAD2"
+security_groups = [aws_security_group.MaxTerraform.name]
+}
+
+resource "aws_security_group" "MaxTerraform" {
+  name        = "MaxTerraform"
+  description = "Allow ssh traffic"
+
+
+  ingress {
+
+    from_port   = 3389
+    to_port     = 3389
+    protocol =   "tcp"
+
+    cidr_blocks =  ["0.0.0.0/0"]
+  }
+
+}
+
+
+#terraform validate
+
+
+#terraform state list

@@ -1,0 +1,32 @@
+building docker
+
+you can get dockerfile from docker hub
+
+create a file named Dockerfile
+#mkdir DockerFiles/
+#touch Dockerfil
+
+edit the dockerfile
+#vim Dockerfile - press i to go inside insert mode
+
+$#getting base image ubuntu
+FROM ubuntu   - get a base image
+
+MAINTAINER mmaxwellchibuike@gmail.com
+
+RUN apt-get update
+
+CMD ["echo", "Hello World.. from my first docker image"] - if you wanna run run something in the command line during container creation (what the container will run when it comes up) 
+esc:wq!   - to exit
+
+build dockerfile to create image
+
+#docker build <location where the folder is>  OR
+#docker buld . - if already in the folder  OR
+#docker build -t <imageName/tagName:version 'location of Dockerfile> EG
+#docker build -t myimage1:1.0 .     - tagging the image
+
+run image to create container
+#docker images 
+
+#docker run <image id>
